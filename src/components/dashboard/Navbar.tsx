@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { Search, Bell, ChevronDown, Sparkles } from "lucide-react";
+import { SearchNormal1, Notification, ArrowDown2, Magicpen } from "iconsax-react";
 import { useState } from "react";
+import AnimatedIcon from "../ocean/AnimatedIcon";
 
 const Navbar = () => {
   const [searchFocused, setSearchFocused] = useState(false);
@@ -24,7 +25,7 @@ const Navbar = () => {
         >
           <h1 className="text-xl font-semibold text-foreground">Dashboard</h1>
           <motion.span
-            className="px-2 py-1 text-xs font-mono rounded-md bg-primary/10 text-primary border border-primary/20"
+            className="px-2 py-1 text-xs font-mono rounded-md bg-primary/10 text-primary border border-primary/20 flex items-center gap-1"
             animate={{
               boxShadow: [
                 "0 0 10px hsla(189, 94%, 43%, 0.2)",
@@ -34,7 +35,9 @@ const Navbar = () => {
             }}
             transition={{ duration: 3, repeat: Infinity }}
           >
-            <Sparkles className="inline w-3 h-3 mr-1" />
+            <AnimatedIcon size={14} variant="pulse" glowColor="cyan">
+              <Magicpen size={12} variant="Bold" color="hsl(var(--primary))" />
+            </AnimatedIcon>
             Live
           </motion.span>
         </motion.div>
@@ -58,10 +61,18 @@ const Navbar = () => {
               : "border-border/30 bg-secondary/30 hover:border-border/50"
             }
           `}>
-            <Search className={`
-              w-4 h-4 ml-4 transition-colors duration-300
-              ${searchFocused ? "text-primary" : "text-muted-foreground"}
-            `} />
+            <AnimatedIcon 
+              size={20} 
+              variant={searchFocused ? "breathe" : "float"} 
+              glowColor="cyan"
+              className="ml-3"
+            >
+              <SearchNormal1 
+                size={16} 
+                variant={searchFocused ? "Bold" : "TwoTone"}
+                color={searchFocused ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))"}
+              />
+            </AnimatedIcon>
             <input
               type="text"
               placeholder="Search protocols, tokens, wallets..."
@@ -106,7 +117,14 @@ const Navbar = () => {
             whileHover={{ scale: 1.05 }}
             whileTap={{ scale: 0.95 }}
           >
-            <Bell className="w-5 h-5 text-muted-foreground group-hover:text-primary transition-colors" />
+            <AnimatedIcon size={24} variant="wave" glowColor="cyan">
+              <Notification 
+                size={20} 
+                variant="TwoTone" 
+                color="hsl(var(--muted-foreground))"
+                className="group-hover:text-primary transition-colors"
+              />
+            </AnimatedIcon>
             
             {/* Notification dot */}
             <motion.span
@@ -143,7 +161,14 @@ const Navbar = () => {
               transition={{ duration: 2, repeat: Infinity }}
             />
             <span className="text-sm font-medium text-foreground">Ethereum</span>
-            <ChevronDown className="w-4 h-4 text-muted-foreground group-hover:text-primary transition-colors" />
+            <AnimatedIcon size={20} variant="float" glowColor="teal">
+              <ArrowDown2 
+                size={16} 
+                variant="TwoTone" 
+                color="hsl(var(--muted-foreground))"
+                className="group-hover:text-primary transition-colors"
+              />
+            </AnimatedIcon>
           </motion.button>
 
           {/* Connect Wallet Button */}

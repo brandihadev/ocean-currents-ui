@@ -1,6 +1,7 @@
 import { motion } from "framer-motion";
-import { ArrowUpRight, ArrowDownLeft, Repeat, ExternalLink } from "lucide-react";
+import { ArrowUp, ArrowDown, Repeat, ExportSquare } from "iconsax-react";
 import LiquidCard from "../ocean/LiquidCard";
+import AnimatedIcon from "../ocean/AnimatedIcon";
 
 const transactions = [
   {
@@ -53,11 +54,11 @@ const transactions = [
 const getTypeIcon = (type: string) => {
   switch (type) {
     case "receive":
-      return <ArrowDownLeft className="w-4 h-4" />;
+      return <ArrowDown size={16} variant="Bold" color="currentColor" />;
     case "send":
-      return <ArrowUpRight className="w-4 h-4" />;
+      return <ArrowUp size={16} variant="Bold" color="currentColor" />;
     case "swap":
-      return <Repeat className="w-4 h-4" />;
+      return <Repeat size={16} variant="Bold" color="currentColor" />;
     default:
       return null;
   }
@@ -70,24 +71,28 @@ const getTypeStyles = (type: string) => {
         bg: "bg-bio-emerald/10",
         text: "text-bio-emerald",
         glow: "hsla(158, 64%, 52%, 0.3)",
+        glowColor: "bio" as const,
       };
     case "send":
       return {
         bg: "bg-primary/10",
         text: "text-primary",
         glow: "hsla(189, 94%, 43%, 0.3)",
+        glowColor: "cyan" as const,
       };
     case "swap":
       return {
         bg: "bg-bio-teal/10",
         text: "text-bio-teal",
         glow: "hsla(168, 76%, 42%, 0.3)",
+        glowColor: "teal" as const,
       };
     default:
       return {
         bg: "bg-muted",
         text: "text-muted-foreground",
         glow: "hsla(217, 33%, 50%, 0.3)",
+        glowColor: "cyan" as const,
       };
   }
 };
@@ -111,7 +116,9 @@ const TransactionList = ({ delay = 0 }: TransactionListProps) => {
           whileHover={{ x: 2 }}
         >
           View All
-          <ExternalLink className="w-3 h-3" />
+          <AnimatedIcon size={16} variant="float" glowColor="cyan">
+            <ExportSquare size={12} variant="TwoTone" color="currentColor" />
+          </AnimatedIcon>
         </motion.button>
       </div>
 
@@ -144,7 +151,9 @@ const TransactionList = ({ delay = 0 }: TransactionListProps) => {
                 }}
                 transition={{ duration: 3, repeat: Infinity, delay: i * 0.5 }}
               >
-                {getTypeIcon(tx.type)}
+                <AnimatedIcon size={20} variant="pulse" glowColor={styles.glowColor}>
+                  {getTypeIcon(tx.type)}
+                </AnimatedIcon>
               </motion.div>
 
               {/* Details */}

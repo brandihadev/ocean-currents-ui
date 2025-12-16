@@ -1,12 +1,14 @@
 import { motion } from "framer-motion";
-import { LucideIcon, TrendingUp, TrendingDown, Minus } from "lucide-react";
+import { TrendUp, TrendDown, Minus } from "iconsax-react";
+import { ReactNode } from "react";
 import LiquidCard from "../ocean/LiquidCard";
+import AnimatedIcon from "../ocean/AnimatedIcon";
 
 interface MetricCardProps {
   title: string;
   value: string;
   change: number;
-  icon: LucideIcon;
+  icon: ReactNode;
   delay?: number;
   accentColor?: "cyan" | "teal" | "bio";
 }
@@ -33,14 +35,13 @@ const MetricCard = ({
   title,
   value,
   change,
-  icon: Icon,
+  icon,
   delay = 0,
   accentColor = "cyan",
 }: MetricCardProps) => {
   const colors = accentColors[accentColor];
   const isPositive = change > 0;
   const isNeutral = change === 0;
-  const TrendIcon = isNeutral ? Minus : isPositive ? TrendingUp : TrendingDown;
 
   return (
     <LiquidCard delay={delay} className="p-6 group">
@@ -64,7 +65,7 @@ const MetricCard = ({
             delay: delay * 2,
           }}
         >
-          <Icon className="w-5 h-5 text-primary-foreground" />
+          {icon}
         </motion.div>
 
         {/* Trend indicator */}
@@ -82,7 +83,15 @@ const MetricCard = ({
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: delay + 0.3 }}
         >
-          <TrendIcon className="w-3 h-3" />
+          <AnimatedIcon size={16} variant="pulse" glowColor={isPositive ? "bio" : "cyan"}>
+            {isNeutral ? (
+              <Minus size={12} color="currentColor" />
+            ) : isPositive ? (
+              <TrendUp size={12} variant="Bold" color="currentColor" />
+            ) : (
+              <TrendDown size={12} variant="Bold" color="currentColor" />
+            )}
+          </AnimatedIcon>
           <span>{isNeutral ? "0" : (isPositive ? "+" : "") + change}%</span>
         </motion.div>
       </div>

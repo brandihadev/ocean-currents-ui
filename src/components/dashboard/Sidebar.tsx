@@ -1,28 +1,28 @@
 import { motion } from "framer-motion";
 import { 
-  LayoutDashboard, 
-  BarChart3, 
-  Wallet, 
-  Users, 
-  Settings, 
-  Bell,
-  Layers,
-  Zap,
-  Shield
-} from "lucide-react";
-import FloatingIcon from "../ocean/FloatingIcon";
+  Category,
+  Chart,
+  Wallet,
+  People,
+  Setting2,
+  Notification,
+  Layer,
+  Flash,
+  ShieldTick
+} from "iconsax-react";
+import AnimatedIcon from "../ocean/AnimatedIcon";
 import { useState } from "react";
 
 const menuItems = [
-  { icon: LayoutDashboard, label: "Dashboard", active: true },
-  { icon: BarChart3, label: "Analytics" },
-  { icon: Wallet, label: "Wallet" },
-  { icon: Layers, label: "Protocols" },
-  { icon: Users, label: "Community" },
-  { icon: Zap, label: "Staking" },
-  { icon: Shield, label: "Security" },
-  { icon: Bell, label: "Alerts" },
-  { icon: Settings, label: "Settings" },
+  { icon: Category, label: "Dashboard", active: true, variant: "float" as const },
+  { icon: Chart, label: "Analytics", variant: "pulse" as const },
+  { icon: Wallet, label: "Wallet", variant: "breathe" as const },
+  { icon: Layer, label: "Protocols", variant: "wave" as const },
+  { icon: People, label: "Community", variant: "float" as const },
+  { icon: Flash, label: "Staking", variant: "pulse" as const },
+  { icon: ShieldTick, label: "Security", variant: "breathe" as const },
+  { icon: Notification, label: "Alerts", variant: "wave" as const },
+  { icon: Setting2, label: "Settings", variant: "float" as const },
 ];
 
 const Sidebar = () => {
@@ -56,7 +56,7 @@ const Sidebar = () => {
           }}
           transition={{ duration: 3, repeat: Infinity }}
         >
-          <Zap className="w-6 h-6 text-primary-foreground" />
+          <Flash size={24} color="hsl(var(--primary-foreground))" variant="Bold" />
         </motion.div>
         <span className="hidden lg:block text-xl font-semibold text-glow gradient-text">
           OceanDAO
@@ -65,59 +65,68 @@ const Sidebar = () => {
 
       {/* Navigation */}
       <nav className="flex-1 px-3 py-6 space-y-2 overflow-y-auto scrollbar-hide">
-        {menuItems.map((item, index) => (
-          <motion.button
-            key={item.label}
-            className={`
-              relative w-full flex items-center gap-4 px-4 py-3 rounded-xl
-              transition-all duration-300 group
-              ${item.active 
-                ? "bg-primary/10 border border-primary/30 shadow-glow" 
-                : "hover:bg-secondary/50 border border-transparent hover:border-border/30"
-              }
-            `}
-            onMouseEnter={() => setHoveredIndex(index)}
-            onMouseLeave={() => setHoveredIndex(null)}
-            initial={{ opacity: 0, x: -30 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ delay: 0.1 * index, duration: 0.4 }}
-            whileHover={{ x: 4 }}
-            whileTap={{ scale: 0.98 }}
-          >
-            {/* Wave propagation effect */}
-            {hoveredIndex === index && (
-              <motion.div
-                className="absolute inset-0 rounded-xl border border-primary/20"
-                initial={{ scale: 1, opacity: 0.5 }}
-                animate={{ scale: 1.1, opacity: 0 }}
-                transition={{ duration: 0.6 }}
-              />
-            )}
-            
-            <FloatingIcon 
-              icon={item.icon} 
-              size={20}
-              delay={index * 0.1}
-              glowColor={item.active ? "cyan" : "teal"}
-            />
-            
-            <span className={`
-              hidden lg:block font-medium text-sm
-              ${item.active ? "text-primary text-glow" : "text-sidebar-foreground/80 group-hover:text-foreground"}
-            `}>
-              {item.label}
-            </span>
+        {menuItems.map((item, index) => {
+          const Icon = item.icon;
+          return (
+            <motion.button
+              key={item.label}
+              className={`
+                relative w-full flex items-center gap-4 px-4 py-3 rounded-xl
+                transition-all duration-300 group
+                ${item.active 
+                  ? "bg-primary/10 border border-primary/30 shadow-glow" 
+                  : "hover:bg-secondary/50 border border-transparent hover:border-border/30"
+                }
+              `}
+              onMouseEnter={() => setHoveredIndex(index)}
+              onMouseLeave={() => setHoveredIndex(null)}
+              initial={{ opacity: 0, x: -30 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1 * index, duration: 0.4 }}
+              whileHover={{ x: 4 }}
+              whileTap={{ scale: 0.98 }}
+            >
+              {/* Wave propagation effect */}
+              {hoveredIndex === index && (
+                <motion.div
+                  className="absolute inset-0 rounded-xl border border-primary/20"
+                  initial={{ scale: 1, opacity: 0.5 }}
+                  animate={{ scale: 1.1, opacity: 0 }}
+                  transition={{ duration: 0.6 }}
+                />
+              )}
+              
+              <AnimatedIcon 
+                size={24}
+                delay={index * 0.1}
+                glowColor={item.active ? "cyan" : "teal"}
+                variant={item.variant}
+              >
+                <Icon 
+                  size={20} 
+                  variant={item.active ? "Bold" : "TwoTone"}
+                  color={item.active ? "hsl(var(--primary))" : "hsl(var(--muted-foreground))"}
+                />
+              </AnimatedIcon>
+              
+              <span className={`
+                hidden lg:block font-medium text-sm
+                ${item.active ? "text-primary text-glow" : "text-sidebar-foreground/80 group-hover:text-foreground"}
+              `}>
+                {item.label}
+              </span>
 
-            {/* Active indicator */}
-            {item.active && (
-              <motion.div
-                className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 rounded-r-full bg-gradient-current"
-                layoutId="activeIndicator"
-                transition={{ type: "spring", stiffness: 300, damping: 30 }}
-              />
-            )}
-          </motion.button>
-        ))}
+              {/* Active indicator */}
+              {item.active && (
+                <motion.div
+                  className="absolute left-0 top-1/2 -translate-y-1/2 w-1 h-8 rounded-r-full bg-gradient-current"
+                  layoutId="activeIndicator"
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                />
+              )}
+            </motion.button>
+          );
+        })}
       </nav>
 
       {/* Neural connection line */}

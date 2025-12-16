@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Wallet, TrendingUp, Coins, Activity } from "lucide-react";
+import { Wallet, TrendUp, Coin1, Activity } from "iconsax-react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
 import MetricCard from "./MetricCard";
@@ -14,28 +14,28 @@ const metrics = [
     title: "Total Balance",
     value: "$55,482.32",
     change: 12.4,
-    icon: Wallet,
+    icon: <Wallet size={20} variant="Bold" color="hsl(var(--primary-foreground))" />,
     accentColor: "cyan" as const,
   },
   {
     title: "Monthly Profit",
     value: "$8,942.18",
     change: 23.7,
-    icon: TrendingUp,
+    icon: <TrendUp size={20} variant="Bold" color="hsl(var(--primary-foreground))" />,
     accentColor: "bio" as const,
   },
   {
     title: "Staked Assets",
     value: "$24,128.00",
     change: 5.2,
-    icon: Coins,
+    icon: <Coin1 size={20} variant="Bold" color="hsl(var(--primary-foreground))" />,
     accentColor: "teal" as const,
   },
   {
     title: "Active Positions",
     value: "12",
     change: 0,
-    icon: Activity,
+    icon: <Activity size={20} variant="Bold" color="hsl(var(--primary-foreground))" />,
     accentColor: "cyan" as const,
   },
 ];
