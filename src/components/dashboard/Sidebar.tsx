@@ -79,41 +79,57 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
             className="fixed left-0 top-0 h-screen w-20 lg:w-64 
               backdrop-blur-2xl border-r border-border/20
               bg-gradient-to-b from-sidebar/90 to-sidebar/70
-              z-40 flex flex-col"
-            initial={{ x: -280, opacity: 0 }}
-            animate={{ x: 0, opacity: 1 }}
-            exit={{ x: -280, opacity: 0 }}
-            transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+              z-40 flex flex-col perspective-1000"
+            initial={{ x: -280, opacity: 0, rotateY: -15 }}
+            animate={{ x: 0, opacity: 1, rotateY: 0 }}
+            exit={{ x: -280, opacity: 0, rotateY: -15 }}
+            transition={{ duration: 0.5, ease: [0.22, 1, 0.36, 1] }}
           >
-            {/* Logo area */}
+            {/* Logo area - parallax layer 1 (fastest) */}
             <motion.div 
               className="p-6 pt-16 flex items-center gap-3"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.1 }}
+              initial={{ opacity: 0, x: -100 }}
+              animate={{ opacity: 1, x: 0 }}
+              transition={{ delay: 0.1, duration: 0.6, ease: [0.22, 1, 0.36, 1] }}
             >
               <motion.div
                 className="w-10 h-10 rounded-xl bg-gradient-current flex items-center justify-center shadow-glow"
+                initial={{ scale: 0, rotate: -180 }}
                 animate={{ 
+                  scale: 1, 
+                  rotate: 0,
                   boxShadow: [
                     "0 0 20px hsla(189, 94%, 43%, 0.3)",
                     "0 0 40px hsla(189, 94%, 43%, 0.5)",
                     "0 0 20px hsla(189, 94%, 43%, 0.3)",
                   ]
                 }}
-                transition={{ duration: 3, repeat: Infinity }}
+                transition={{ 
+                  scale: { delay: 0.2, duration: 0.5, ease: "backOut" },
+                  rotate: { delay: 0.2, duration: 0.5, ease: "backOut" },
+                  boxShadow: { duration: 3, repeat: Infinity, delay: 0.7 }
+                }}
               >
                 <Flash size={24} color="hsl(var(--primary-foreground))" variant="Bold" />
               </motion.div>
-              <span className="hidden lg:block text-xl font-semibold text-glow gradient-text">
+              <motion.span 
+                className="hidden lg:block text-xl font-semibold text-glow gradient-text"
+                initial={{ opacity: 0, x: -30 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3, duration: 0.5 }}
+              >
                 OceanDAO
-              </span>
+              </motion.span>
             </motion.div>
 
-            {/* Navigation */}
+            {/* Navigation - parallax layer 2 (staggered depths) */}
             <nav className="flex-1 px-3 py-6 space-y-2 overflow-y-auto scrollbar-hide">
               {menuItems.map((item, index) => {
                 const Icon = item.icon;
+                // Calculate parallax depth - items deeper in list have more offset
+                const parallaxDepth = 1 + (index * 0.15);
+                const parallaxDelay = 0.15 + (index * 0.08);
+                
                 return (
                   <motion.button
                     key={item.label}
@@ -127,10 +143,24 @@ const Sidebar = ({ collapsed, onToggle }: SidebarProps) => {
                     `}
                     onMouseEnter={() => setHoveredIndex(index)}
                     onMouseLeave={() => setHoveredIndex(null)}
-                    initial={{ opacity: 0, x: -30 }}
-                    animate={{ opacity: 1, x: 0 }}
-                    transition={{ delay: 0.1 * index, duration: 0.4 }}
-                    whileHover={{ x: 4 }}
+                    initial={{ 
+                      opacity: 0, 
+                      x: -80 * parallaxDepth,
+                      scale: 0.8,
+                      filter: "blur(4px)"
+                    }}
+                    animate={{ 
+                      opacity: 1, 
+                      x: 0,
+                      scale: 1,
+                      filter: "blur(0px)"
+                    }}
+                    transition={{ 
+                      delay: parallaxDelay, 
+                      duration: 0.6,
+                      ease: [0.22, 1, 0.36, 1]
+                    }}
+                    whileHover={{ x: 8, scale: 1.02 }}
                     whileTap={{ scale: 0.98 }}
                   >
                     {/* Wave propagation effect */}
