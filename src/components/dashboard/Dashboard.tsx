@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useState } from "react";
 import { Wallet, TrendUp, Coin1, Activity } from "iconsax-react";
 import Sidebar from "./Sidebar";
 import Navbar from "./Navbar";
@@ -41,6 +42,8 @@ const metrics = [
 ];
 
 const Dashboard = () => {
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
+
   return (
     <div className="min-h-screen bg-background relative overflow-hidden">
       {/* Ocean immersive effects */}
@@ -48,11 +51,15 @@ const Dashboard = () => {
       <CursorWave />
 
       {/* Layout */}
-      <Sidebar />
+      <Sidebar collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} />
       <Navbar />
 
       {/* Main content */}
-      <main className="ml-20 lg:ml-64 pt-16 min-h-screen relative z-10">
+      <motion.main 
+        className="ml-20 lg:ml-64 pt-16 min-h-screen relative z-10"
+        animate={{ marginLeft: sidebarCollapsed ? 0 : undefined }}
+        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+      >
         <div className="p-6 lg:p-8 max-w-7xl mx-auto">
           {/* Welcome section */}
           <motion.div
@@ -222,7 +229,7 @@ const Dashboard = () => {
             </motion.div>
           </div>
         </div>
-      </main>
+      </motion.main>
     </div>
   );
 };
