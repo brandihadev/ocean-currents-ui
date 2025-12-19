@@ -1,233 +1,133 @@
 import { motion } from "framer-motion";
 import { useState } from "react";
-import { Wallet, TrendUp, Coin1, Activity } from "iconsax-react";
+import { Search, Sun, Zap } from "lucide-react";
 import Sidebar from "./Sidebar";
-import Navbar from "./Navbar";
-import MetricCard from "./MetricCard";
+import CryptoCard from "./CryptoCard";
+import BalanceCard from "./BalanceCard";
 import ChartCard from "./ChartCard";
-import TransactionList from "./TransactionList";
-import AssetAllocation from "./AssetAllocation";
-import OceanBackground from "../ocean/OceanBackground";
-import CursorWave from "../ocean/CursorWave";
-
-const metrics = [
-  {
-    title: "Total Balance",
-    value: "$55,482.32",
-    change: 12.4,
-    icon: <Wallet size={20} variant="Bold" color="hsl(var(--primary-foreground))" />,
-    accentColor: "cyan" as const,
-  },
-  {
-    title: "Monthly Profit",
-    value: "$8,942.18",
-    change: 23.7,
-    icon: <TrendUp size={20} variant="Bold" color="hsl(var(--primary-foreground))" />,
-    accentColor: "bio" as const,
-  },
-  {
-    title: "Staked Assets",
-    value: "$24,128.00",
-    change: 5.2,
-    icon: <Coin1 size={20} variant="Bold" color="hsl(var(--primary-foreground))" />,
-    accentColor: "teal" as const,
-  },
-  {
-    title: "Active Positions",
-    value: "12",
-    change: 0,
-    icon: <Activity size={20} variant="Bold" color="hsl(var(--primary-foreground))" />,
-    accentColor: "cyan" as const,
-  },
-];
+import CryptoTable from "./CryptoTable";
+import TransactionHistory from "./TransactionHistory";
 
 const Dashboard = () => {
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false);
 
   return (
-    <div className="min-h-screen bg-background relative overflow-hidden">
-      {/* Ocean immersive effects */}
-      <OceanBackground />
-      <CursorWave />
-
+    <div className="min-h-screen bg-background">
       {/* Layout */}
       <Sidebar collapsed={sidebarCollapsed} onToggle={() => setSidebarCollapsed(!sidebarCollapsed)} />
-      <Navbar />
 
       {/* Main content */}
       <motion.main 
-        className="ml-20 lg:ml-64 pt-16 min-h-screen relative z-10"
+        className="lg:ml-64 min-h-screen"
         animate={{ marginLeft: sidebarCollapsed ? 0 : undefined }}
-        transition={{ duration: 0.3, ease: [0.4, 0, 0.2, 1] }}
+        transition={{ duration: 0.25, ease: [0.4, 0, 0.2, 1] }}
       >
-        <div className="p-6 lg:p-8 max-w-7xl mx-auto">
-          {/* Welcome section */}
-          <motion.div
-            className="mb-8"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            <motion.h1
-              className="text-3xl lg:text-4xl font-bold text-foreground"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.1 }}
-            >
-              Welcome back,{" "}
-              <span className="gradient-text text-glow-strong">John</span>
-            </motion.h1>
-            <motion.p
-              className="mt-2 text-muted-foreground text-lg"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              Here's what's happening with your portfolio today.
-            </motion.p>
-          </motion.div>
-
-          {/* Metrics Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 mb-8">
-            {metrics.map((metric, i) => (
-              <MetricCard
-                key={metric.title}
-                {...metric}
-                delay={0.2 + i * 0.1}
-              />
-            ))}
-          </div>
-
-          {/* Charts and Lists */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-8">
-            <ChartCard delay={0.5} />
-            <TransactionList delay={0.6} />
-          </div>
-
-          {/* Bottom row */}
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            <AssetAllocation delay={0.7} />
-            
-            {/* Protocol Stats Card */}
-            <motion.div
-              className="lg:col-span-2 relative overflow-hidden rounded-xl 
-                backdrop-blur-xl border border-border/30
-                bg-gradient-to-br from-card/80 to-card/40 shadow-ocean p-6"
-              initial={{ opacity: 0, y: 30, scale: 0.95 }}
-              animate={{ opacity: 1, y: 0, scale: 1 }}
-              transition={{ duration: 0.6, delay: 0.8 }}
-            >
-              {/* Shimmer overlay */}
-              <div className="absolute inset-0 shimmer pointer-events-none" />
-              
-              <div className="relative z-10">
-                <h3 className="text-lg font-semibold text-foreground mb-4">Protocol Analytics</h3>
-                
-                <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                  {[
-                    { label: "Total Protocols", value: "8", sub: "Connected" },
-                    { label: "Avg. APY", value: "14.2%", sub: "Across all" },
-                    { label: "Gas Saved", value: "$892", sub: "This month" },
-                    { label: "Rewards", value: "1,245", sub: "Points earned" },
-                  ].map((stat, i) => (
-                    <motion.div
-                      key={stat.label}
-                      className="p-4 rounded-xl bg-secondary/30 border border-border/20 
-                        hover:border-primary/20 hover:bg-secondary/40 transition-all duration-300"
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ delay: 0.9 + i * 0.1 }}
-                      whileHover={{ y: -4, scale: 1.02 }}
-                    >
-                      <motion.p
-                        className="text-2xl font-bold gradient-text"
-                        animate={{
-                          textShadow: [
-                            "0 0 20px hsla(189, 94%, 43%, 0.4)",
-                            "0 0 40px hsla(189, 94%, 43%, 0.6)",
-                            "0 0 20px hsla(189, 94%, 43%, 0.4)",
-                          ],
-                        }}
-                        transition={{ duration: 3, repeat: Infinity, delay: i * 0.5 }}
-                      >
-                        {stat.value}
-                      </motion.p>
-                      <p className="text-sm text-foreground font-medium mt-1">{stat.label}</p>
-                      <p className="text-xs text-muted-foreground">{stat.sub}</p>
-                    </motion.div>
-                  ))}
-                </div>
-
-                {/* Neural connection visualization */}
-                <div className="mt-6 h-32 relative overflow-hidden rounded-xl bg-secondary/20 border border-border/20">
-                  <motion.div
-                    className="absolute inset-0 flex items-center justify-center"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ delay: 1.2 }}
-                  >
-                    {/* Neural nodes */}
-                    {[...Array(8)].map((_, i) => (
-                      <motion.div
-                        key={i}
-                        className="absolute w-3 h-3 rounded-full bg-primary"
-                        style={{
-                          left: `${12 + i * 12}%`,
-                          top: `${30 + Math.sin(i * 0.8) * 20}%`,
-                          boxShadow: "0 0 15px hsla(189, 94%, 43%, 0.6)",
-                        }}
-                        animate={{
-                          y: [0, -5, 0],
-                          scale: [1, 1.2, 1],
-                          boxShadow: [
-                            "0 0 15px hsla(189, 94%, 43%, 0.6)",
-                            "0 0 30px hsla(189, 94%, 43%, 0.8)",
-                            "0 0 15px hsla(189, 94%, 43%, 0.6)",
-                          ],
-                        }}
-                        transition={{
-                          duration: 3 + i * 0.2,
-                          repeat: Infinity,
-                          delay: i * 0.3,
-                        }}
-                      />
-                    ))}
-                    
-                    {/* Connection lines */}
-                    <svg className="absolute inset-0 w-full h-full">
-                      {[...Array(7)].map((_, i) => (
-                        <motion.line
-                          key={i}
-                          x1={`${12 + i * 12}%`}
-                          y1={`${30 + Math.sin(i * 0.8) * 20}%`}
-                          x2={`${12 + (i + 1) * 12}%`}
-                          y2={`${30 + Math.sin((i + 1) * 0.8) * 20}%`}
-                          stroke="url(#neural-gradient)"
-                          strokeWidth="1"
-                          strokeDasharray="4 2"
-                          initial={{ pathLength: 0, opacity: 0 }}
-                          animate={{ pathLength: 1, opacity: 0.5 }}
-                          transition={{ delay: 1.3 + i * 0.1, duration: 0.5 }}
-                        />
-                      ))}
-                      <defs>
-                        <linearGradient id="neural-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
-                          <stop offset="0%" stopColor="hsla(189, 94%, 43%, 0)" />
-                          <stop offset="50%" stopColor="hsla(189, 94%, 43%, 0.8)" />
-                          <stop offset="100%" stopColor="hsla(189, 94%, 43%, 0)" />
-                        </linearGradient>
-                      </defs>
-                    </svg>
-
-                    {/* Overlay text */}
-                    <p className="text-xs text-muted-foreground font-mono z-10">
-                      Protocol connections active • Real-time sync enabled
-                    </p>
-                  </motion.div>
-                </div>
+        {/* Top Navbar */}
+        <header className="sticky top-0 z-30 bg-background/80 backdrop-blur-md border-b border-border">
+          <div className="flex items-center justify-between px-6 py-4">
+            {/* Search */}
+            <div className="flex items-center gap-3 flex-1 max-w-md">
+              <div className="relative flex-1">
+                <Search size={18} className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground" />
+                <input 
+                  type="text"
+                  placeholder="Search..."
+                  className="w-full pl-10 pr-4 py-2.5 rounded-xl bg-card border border-border
+                    text-sm placeholder:text-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary/20"
+                />
               </div>
-            </motion.div>
+            </div>
+
+            {/* Right side */}
+            <div className="flex items-center gap-3">
+              {/* Theme toggle */}
+              <button className="p-2.5 rounded-xl hover:bg-secondary transition-colors">
+                <Sun size={18} className="text-muted-foreground" />
+              </button>
+              
+              {/* Notification */}
+              <button className="p-2.5 rounded-xl hover:bg-secondary transition-colors relative">
+                <Zap size={18} className="text-muted-foreground" />
+                <span className="absolute top-2 right-2 w-2 h-2 bg-primary rounded-full" />
+              </button>
+
+              {/* Connect Button */}
+              <motion.button 
+                className="px-5 py-2.5 bg-foreground text-background rounded-xl font-medium text-sm
+                  hover:opacity-90 transition-opacity"
+                whileHover={{ scale: 1.02 }}
+                whileTap={{ scale: 0.98 }}
+              >
+                CONNECT
+              </motion.button>
+            </div>
           </div>
+        </header>
+
+        {/* Dashboard Content */}
+        <div className="p-6 lg:p-8">
+          {/* Top row - Crypto cards + Balance */}
+          <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
+            <div className="lg:col-span-3">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <CryptoCard 
+                  name="BITCOIN"
+                  symbol="BTC"
+                  amount="0.2231345"
+                  usdValue="11,032.24"
+                  change={12.5}
+                  icon="₿"
+                  color="amber"
+                  delay={0}
+                />
+                <CryptoCard 
+                  name="TETHER"
+                  symbol="USDT"
+                  amount="1.2345"
+                  usdValue="1,032.24"
+                  change={-1.5}
+                  icon="₮"
+                  color="teal"
+                  delay={0.1}
+                />
+                <CryptoCard 
+                  name="CARDANO"
+                  symbol="ADA"
+                  amount="1.2370"
+                  usdValue="532.94"
+                  change={12.5}
+                  icon="◈"
+                  color="blue"
+                  delay={0.2}
+                />
+              </div>
+            </div>
+            <BalanceCard delay={0.3} />
+          </div>
+
+          {/* Charts row */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
+            <ChartCard 
+              title="LIQUIDITY"
+              value="547.8M"
+              date="June 19, 2021"
+              type="area"
+              delay={0.4}
+            />
+            <ChartCard 
+              title="VOLUME 24H"
+              value="547.8M"
+              date="June 19, 2021"
+              type="bar"
+              delay={0.5}
+            />
+          </div>
+
+          {/* Crypto Table */}
+          <CryptoTable delay={0.6} />
+
+          {/* Transaction History */}
+          <TransactionHistory delay={0.7} />
         </div>
       </motion.main>
     </div>
