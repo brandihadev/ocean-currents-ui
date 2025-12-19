@@ -81,14 +81,14 @@ const cryptoData = [
 
 const MiniChart = ({ data, isPositive }: { data: number[], isPositive: boolean }) => {
   const chartData = data.map((value, index) => ({ value, index }));
-  const color = isPositive ? "hsl(158, 64%, 52%)" : "hsl(0, 84%, 60%)";
+  const color = isPositive ? "hsl(158, 64%, 52%)" : "hsl(0, 72%, 51%)";
 
   return (
     <ResponsiveContainer width={100} height={40}>
       <AreaChart data={chartData} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
         <defs>
-          <linearGradient id={`miniGradient-${isPositive}`} x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0%" stopColor={color} stopOpacity={0.3} />
+          <linearGradient id={`miniGradientDark-${isPositive}`} x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0%" stopColor={color} stopOpacity={0.4} />
             <stop offset="100%" stopColor={color} stopOpacity={0} />
           </linearGradient>
         </defs>
@@ -97,7 +97,10 @@ const MiniChart = ({ data, isPositive }: { data: number[], isPositive: boolean }
           dataKey="value"
           stroke={color}
           strokeWidth={1.5}
-          fill={`url(#miniGradient-${isPositive})`}
+          fill={`url(#miniGradientDark-${isPositive})`}
+          style={{
+            filter: `drop-shadow(0 0 4px ${color})`
+          }}
         />
       </AreaChart>
     </ResponsiveContainer>
@@ -107,13 +110,14 @@ const MiniChart = ({ data, isPositive }: { data: number[], isPositive: boolean }
 const CryptoTable = ({ delay = 0 }: CryptoTableProps) => {
   return (
     <motion.div
-      className="bg-card rounded-2xl border border-border shadow-card overflow-hidden mb-6"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay }}
+      className="bg-card/80 backdrop-blur-xl rounded-2xl border border-border/50 
+        overflow-hidden mb-6 shimmer"
+      initial={{ opacity: 0, y: 20, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.5, delay }}
     >
       {/* Header */}
-      <div className="p-6 pb-4">
+      <div className="p-6 pb-4 border-b border-border/30">
         <h2 className="text-lg font-semibold text-foreground">Top Cryptocurrency</h2>
       </div>
 
@@ -121,7 +125,7 @@ const CryptoTable = ({ delay = 0 }: CryptoTableProps) => {
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-border">
+            <tr className="border-b border-border/30">
               <th className="text-left text-xs font-medium text-muted-foreground py-3 px-6">#</th>
               <th className="text-left text-xs font-medium text-muted-foreground py-3 px-6">Name</th>
               <th className="text-left text-xs font-medium text-muted-foreground py-3 px-6">Price</th>
@@ -138,17 +142,20 @@ const CryptoTable = ({ delay = 0 }: CryptoTableProps) => {
               return (
                 <motion.tr 
                   key={crypto.symbol}
-                  className="border-b border-border/50 hover:bg-secondary/30 transition-colors"
-                  initial={{ opacity: 0, x: -10 }}
+                  className="border-b border-border/20 hover:bg-secondary/30 transition-colors group"
+                  initial={{ opacity: 0, x: -20 }}
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: delay + index * 0.05 }}
+                  whileHover={{ backgroundColor: "hsla(217, 33%, 12%, 0.5)" }}
                 >
                   <td className="py-4 px-6 font-mono text-sm text-muted-foreground">
                     {crypto.rank}
                   </td>
                   <td className="py-4 px-6">
                     <div className="flex items-center gap-2">
-                      <span className="font-medium text-foreground">{crypto.name}</span>
+                      <span className="font-medium text-foreground group-hover:text-glow transition-all">
+                        {crypto.name}
+                      </span>
                       <span className="text-xs text-muted-foreground">{crypto.symbol}</span>
                     </div>
                   </td>
@@ -156,12 +163,17 @@ const CryptoTable = ({ delay = 0 }: CryptoTableProps) => {
                     {crypto.price}
                   </td>
                   <td className="py-4 px-6">
-                    <div className={`inline-flex items-center gap-1 text-sm font-medium
-                      ${isPositive ? 'text-emerald-600' : 'text-red-500'}`}
+                    <motion.div 
+                      className={`inline-flex items-center gap-1 text-sm font-medium px-2 py-0.5 rounded-md
+                        ${isPositive 
+                          ? 'text-emerald-400 bg-emerald-500/10 border border-emerald-500/20' 
+                          : 'text-red-400 bg-red-500/10 border border-red-500/20'
+                        }`}
+                      whileHover={{ scale: 1.05 }}
                     >
                       {isPositive ? <TrendingUp size={14} /> : <TrendingDown size={14} />}
                       {crypto.change}%
-                    </div>
+                    </motion.div>
                   </td>
                   <td className="py-4 px-6 font-mono text-sm text-muted-foreground">
                     {crypto.volume}

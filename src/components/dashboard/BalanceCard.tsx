@@ -8,20 +8,35 @@ interface BalanceCardProps {
 const BalanceCard = ({ delay = 0 }: BalanceCardProps) => {
   return (
     <motion.div
-      className="bg-card rounded-2xl p-6 border border-border shadow-card"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay }}
+      className="bg-card/80 backdrop-blur-xl rounded-2xl p-6 border border-border/50 
+        relative overflow-hidden shimmer"
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.5, delay }}
+      whileHover={{ 
+        scale: 1.02,
+        boxShadow: "0 0 40px hsla(168, 76%, 46%, 0.15)"
+      }}
     >
       {/* Profile Image */}
       <div className="flex justify-center mb-4">
-        <div className="w-20 h-20 rounded-full overflow-hidden ring-4 ring-primary/20">
+        <motion.div 
+          className="w-20 h-20 rounded-full overflow-hidden ring-4 ring-primary/30"
+          animate={{
+            boxShadow: [
+              "0 0 15px hsla(168, 76%, 46%, 0.3)",
+              "0 0 30px hsla(168, 76%, 46%, 0.5)",
+              "0 0 15px hsla(168, 76%, 46%, 0.3)"
+            ]
+          }}
+          transition={{ duration: 3, repeat: Infinity }}
+        >
           <img 
             src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?w=160&h=160&fit=crop&crop=face" 
             alt="Profile"
             className="w-full h-full object-cover"
           />
-        </div>
+        </motion.div>
       </div>
 
       {/* Balance */}
@@ -29,25 +44,48 @@ const BalanceCard = ({ delay = 0 }: BalanceCardProps) => {
         <p className="text-xs font-medium text-muted-foreground tracking-widest mb-1">
           MY BALANCE
         </p>
-        <p className="font-mono text-3xl font-bold text-foreground">
+        <motion.p 
+          className="font-mono text-3xl font-bold gradient-text text-glow-strong"
+          animate={{
+            textShadow: [
+              "0 0 20px hsla(168, 76%, 46%, 0.4)",
+              "0 0 40px hsla(168, 76%, 46%, 0.6)",
+              "0 0 20px hsla(168, 76%, 46%, 0.4)"
+            ]
+          }}
+          transition={{ duration: 3, repeat: Infinity }}
+        >
           $10,86,000
-        </p>
+        </motion.p>
       </div>
 
       {/* Top Up Button */}
       <motion.button 
         className="w-full flex items-center justify-between px-4 py-3 
-          border-2 border-dashed border-border rounded-xl
+          border border-dashed border-primary/30 rounded-xl
           text-muted-foreground hover:border-primary hover:text-primary
-          transition-colors group"
-        whileHover={{ scale: 1.01 }}
-        whileTap={{ scale: 0.99 }}
+          transition-all duration-300 group wave-button bg-primary/5"
+        whileHover={{ 
+          scale: 1.02,
+          boxShadow: "0 0 20px hsla(168, 76%, 46%, 0.2)"
+        }}
+        whileTap={{ scale: 0.98 }}
       >
         <div className="flex items-center gap-2">
-          <Plus size={18} />
+          <motion.div
+            animate={{ rotate: [0, 90, 0] }}
+            transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+          >
+            <Plus size={18} />
+          </motion.div>
           <span className="text-sm font-medium tracking-wide">TOP UP BALANCE</span>
         </div>
-        <ChevronRight size={18} className="group-hover:translate-x-1 transition-transform" />
+        <motion.div
+          animate={{ x: [0, 4, 0] }}
+          transition={{ duration: 1.5, repeat: Infinity }}
+        >
+          <ChevronRight size={18} />
+        </motion.div>
       </motion.button>
     </motion.div>
   );

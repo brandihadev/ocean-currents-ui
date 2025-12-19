@@ -21,46 +21,91 @@ const ChartCard = ({ title, value, date, type, delay = 0 }: ChartCardProps) => {
 
   return (
     <motion.div
-      className="bg-card rounded-2xl p-6 border border-border shadow-card"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay }}
+      className="bg-card/80 backdrop-blur-xl rounded-2xl p-6 border border-border/50 
+        relative overflow-hidden shimmer"
+      initial={{ opacity: 0, y: 20, scale: 0.95 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.5, delay }}
+      whileHover={{ 
+        scale: 1.01,
+        boxShadow: "0 0 40px hsla(168, 76%, 46%, 0.1)"
+      }}
     >
+      {/* Header */}
       <div className="mb-6">
         <p className="text-xs font-medium text-muted-foreground tracking-widest mb-1">
           {title}
         </p>
-        <p className="font-mono text-2xl font-bold text-foreground">
+        <motion.p 
+          className="font-mono text-2xl font-bold text-foreground"
+          initial={{ opacity: 0, x: -10 }}
+          animate={{ opacity: 1, x: 0 }}
+          transition={{ delay: delay + 0.2 }}
+        >
           {value}
-        </p>
+        </motion.p>
         <p className="font-mono text-xs text-muted-foreground mt-1">
           {date}
         </p>
       </div>
 
-      <div className="h-48">
+      {/* Chart */}
+      <motion.div 
+        className="h-48"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: delay + 0.3 }}
+      >
         <ResponsiveContainer width="100%" height="100%">
           {type === "area" ? (
             <AreaChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
               <defs>
-                <linearGradient id="areaGradient" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="0%" stopColor="hsl(168, 76%, 42%)" stopOpacity={0.3} />
-                  <stop offset="100%" stopColor="hsl(168, 76%, 42%)" stopOpacity={0} />
+                <linearGradient id="areaGradientDark" x1="0" y1="0" x2="0" y2="1">
+                  <stop offset="0%" stopColor="hsl(168, 76%, 46%)" stopOpacity={0.4} />
+                  <stop offset="100%" stopColor="hsl(168, 76%, 46%)" stopOpacity={0} />
                 </linearGradient>
               </defs>
-              <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: 'hsl(220, 9%, 46%)' }} dy={10} />
+              <XAxis 
+                dataKey="day" 
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 10, fill: 'hsl(199, 20%, 55%)' }}
+                dy={10}
+              />
               <YAxis hide />
-              <Area type="monotone" dataKey="value" stroke="hsl(168, 76%, 42%)" strokeWidth={2} fill="url(#areaGradient)" />
+              <Area
+                type="monotone"
+                dataKey="value"
+                stroke="hsl(168, 76%, 46%)"
+                strokeWidth={2}
+                fill="url(#areaGradientDark)"
+                style={{
+                  filter: "drop-shadow(0 0 8px hsla(168, 76%, 46%, 0.4))"
+                }}
+              />
             </AreaChart>
           ) : (
             <BarChart data={data} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
-              <XAxis dataKey="day" axisLine={false} tickLine={false} tick={{ fontSize: 10, fill: 'hsl(220, 9%, 46%)' }} dy={10} />
+              <XAxis 
+                dataKey="day" 
+                axisLine={false}
+                tickLine={false}
+                tick={{ fontSize: 10, fill: 'hsl(199, 20%, 55%)' }}
+                dy={10}
+              />
               <YAxis hide />
-              <Bar dataKey="value" fill="hsl(168, 76%, 42%)" radius={[4, 4, 0, 0]} />
+              <Bar
+                dataKey="value"
+                fill="hsl(168, 76%, 46%)"
+                radius={[4, 4, 0, 0]}
+                style={{
+                  filter: "drop-shadow(0 0 4px hsla(168, 76%, 46%, 0.3))"
+                }}
+              />
             </BarChart>
           )}
         </ResponsiveContainer>
-      </div>
+      </motion.div>
     </motion.div>
   );
 };

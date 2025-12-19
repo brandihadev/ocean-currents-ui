@@ -48,27 +48,28 @@ const transactions = [
 ];
 
 const statusColors: Record<string, string> = {
-  "Pending": "text-amber-600 bg-amber-50",
-  "Completed": "text-emerald-600 bg-emerald-50",
-  "Failed": "text-red-600 bg-red-50"
+  "Pending": "text-amber-400 bg-amber-500/10 border border-amber-500/20",
+  "Completed": "text-emerald-400 bg-emerald-500/10 border border-emerald-500/20",
+  "Failed": "text-red-400 bg-red-500/10 border border-red-500/20"
 };
 
 const typeColors: Record<string, string> = {
-  "Buy": "text-emerald-600",
-  "Sell": "text-red-500",
-  "Swap": "text-blue-600"
+  "Buy": "text-emerald-400",
+  "Sell": "text-red-400",
+  "Swap": "text-blue-400"
 };
 
 const TransactionHistory = ({ delay = 0 }: TransactionHistoryProps) => {
   return (
     <motion.div
-      className="bg-card rounded-2xl border border-border shadow-card overflow-hidden"
-      initial={{ opacity: 0, y: 20 }}
-      animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.4, delay }}
+      className="bg-card/80 backdrop-blur-xl rounded-2xl border border-border/50 
+        overflow-hidden shimmer"
+      initial={{ opacity: 0, y: 20, scale: 0.98 }}
+      animate={{ opacity: 1, y: 0, scale: 1 }}
+      transition={{ duration: 0.5, delay }}
     >
       {/* Header */}
-      <div className="p-6 pb-4">
+      <div className="p-6 pb-4 border-b border-border/30">
         <h2 className="text-lg font-semibold text-foreground">Transaction History</h2>
       </div>
 
@@ -76,7 +77,7 @@ const TransactionHistory = ({ delay = 0 }: TransactionHistoryProps) => {
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>
-            <tr className="border-b border-border">
+            <tr className="border-b border-border/30">
               <th className="text-left text-xs font-medium text-muted-foreground py-3 px-6">ID</th>
               <th className="text-left text-xs font-medium text-muted-foreground py-3 px-6">Type</th>
               <th className="text-left text-xs font-medium text-muted-foreground py-3 px-6">Date</th>
@@ -90,10 +91,11 @@ const TransactionHistory = ({ delay = 0 }: TransactionHistoryProps) => {
             {transactions.map((tx, index) => (
               <motion.tr 
                 key={tx.id}
-                className="border-b border-border/50 hover:bg-secondary/30 transition-colors"
-                initial={{ opacity: 0, x: -10 }}
+                className="border-b border-border/20 hover:bg-secondary/30 transition-colors group"
+                initial={{ opacity: 0, x: -20 }}
                 animate={{ opacity: 1, x: 0 }}
                 transition={{ delay: delay + index * 0.05 }}
+                whileHover={{ backgroundColor: "hsla(217, 33%, 12%, 0.5)" }}
               >
                 <td className="py-4 px-6 font-mono text-sm text-muted-foreground">
                   {tx.id}
@@ -104,13 +106,16 @@ const TransactionHistory = ({ delay = 0 }: TransactionHistoryProps) => {
                 <td className="py-4 px-6 text-sm text-muted-foreground">
                   {tx.date}
                 </td>
-                <td className="py-4 px-6 text-sm font-medium text-foreground">
+                <td className="py-4 px-6 text-sm font-medium text-foreground group-hover:text-glow transition-all">
                   {tx.asset}
                 </td>
                 <td className="py-4 px-6">
-                  <span className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${statusColors[tx.status]}`}>
+                  <motion.span 
+                    className={`inline-block px-3 py-1 rounded-full text-xs font-medium ${statusColors[tx.status]}`}
+                    whileHover={{ scale: 1.05 }}
+                  >
                     {tx.status}
-                  </span>
+                  </motion.span>
                 </td>
                 <td className="py-4 px-6 font-mono text-sm text-muted-foreground">
                   {tx.address}
